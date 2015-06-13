@@ -1,0 +1,15 @@
+import java.util.*;
+public class CobaStack{
+  
+  public static void main(String[]args){
+    Stack<String> coba = new Stack<String>();   
+    coba.push("No. Urut 1");
+    coba.push("No. Urut 2");
+    coba.push("No. Urut 3");
+    int i=1;
+    do{
+      System.out.println("Stack yang keluar ke "+ i + " : " +coba.pop());
+      i++;
+    }while(coba.empty() == false);    
+  }
+}
