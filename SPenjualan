@@ -1,0 +1,723 @@
+import java.util.*;
+import java.io.*;
+import java.text.*;
+import java.math.*;
+
+public class SPenjualan
+{
+	//Deklarasi vektor
+	public static Vector<Vector> barang = new Vector<Vector>();
+	public static Vector<Vector> cstruk = new Vector<Vector>();//cetak struk
+	public static Vector<Vector> dpenjualan = new Vector<Vector>();//data penjualan
+  
+	public static String [] user = {"pelanggan"};
+  
+	public static String [] pwd = {"plg"};
+
+	public static void login()
+		{
+			int login = -1;
+			int u = 0;
+			Scanner s = new Scanner(System.in);
+			do
+			{
+				garis2();
+				System.out.println("    Silahkan Login");
+				garis2();
+				System.out.print("Username : ");
+				String username=s.next();
+				System.out.print("Password : ");
+				String password=s.next();
+				System.out.println();
+				
+				for (u=0;u<user.length;u++)
+				{
+					if((username.equals(user[u]))&&(password.equals(pwd[u])))
+					{
+						login=u;
+						garis();
+						System.out.println("      SELAMAT DATANG ");
+						System.out.println("     TOKO LARIS MANIS ");
+					}
+					else
+					{
+						System.out.println("Username / Password Salah !!!");
+						System.out.println();
+					}
+				}
+			}
+			while(login==-1);
+		}
+	
+//Procedure	
+	public static Vector<Object> addb(String nbarang,int jual,int beli)
+		{
+			Vector <Object> barang = new Vector<Object>();
+			barang.addElement(nbarang);
+			barang.addElement(String.valueOf(jual));
+			barang.addElement(String.valueOf(beli));
+			return barang;
+		}
+	
+	public static Vector<Object> cetak(String nbarang,int harga,int j,int tharga)
+		{
+			Vector <Object> struk = new Vector<Object>();
+			struk.addElement(nbarang);
+			struk.addElement(harga);
+			struk.addElement(j);
+			struk.addElement(tharga);
+			return struk;
+		}
+	
+	public static Vector<Object> datapen(int kode,String tgl,String bar, int jbeli)
+		{
+			Vector <Object> datap = new Vector<Object>();
+			datap.addElement(kode);
+			datap.addElement(tgl);
+			datap.addElement(bar);
+			datap.addElement(jbeli);
+			return datap;
+		}
+	
+	public static String getTanggal() 
+		{  
+			DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");  
+			Date date = new Date();  
+			return dateFormat.format(date);  
+		}  
+//Fungsi
+	public static void garis()
+		{
+			System.out.println("-------------------------");
+		}
+		
+	public static void garis2()
+		{
+			System.out.println("=========================");
+		}
+	public static void cetakdbarang()
+	{
+	int jum = barang.size();
+		Vector<String> struk = new Vector<String>();
+						garis2();
+						System.out.println("      Data Barang");
+						garis2();
+						System.out.println();
+						for (int a = 0 ; a < jum ; a++)
+							{
+							System.out.print(a+1 +"  ");
+							System.out.print(barang.elementAt(a).elementAt(0) + "\t" +" Rp " +barang.elementAt(a).elementAt(1));
+							System.out.println();
+							}
+						garis2();
+	}
+	
+	public static void main(String[]args) throws IOException
+		{
+			BufferedReader ii = new BufferedReader(new InputStreamReader(System.in));
+			Scanner i = new Scanner(System.in);
+			Vector<Vector> v = new Vector<Vector>();
+			barang.addElement(addb("Jaket",20000,10000));
+			barang.addElement(addb("Celana",25000,20000));
+			barang.addElement(addb("Sepatu",45000,40000));
+				int jum = barang.size();
+				int jml = 0;
+				int logout = 0;
+				int untung = 0 ;
+				int keluar = 0;
+				int b = 0;
+				String transaksi = "kosong";
+		
+		
+		
+		while(keluar == 0)
+			{
+				login();
+				logout = 0;
+				while(logout == 0)
+				{
+					garis();
+					System.out.println("1. Beli Barang");
+					System.out.println("2. Tambah Barang");
+					System.out.println("3. Hapus Barang");
+					System.out.println("4. Cek Data Barang");
+					System.out.println("5. Pendapatan");
+					System.out.println("6. Edit Data Barang");
+					System.out.println("7. Cari Data");
+					System.out.println("8. Data Penjualan");
+					System.out.println("9. Log Out");
+					System.out.println("10. Keluar");
+					System.out.print("Masukkan pilihan (1-10) : ");
+					int pil = i.nextInt();
+					garis();
+					
+				switch (pil)
+				{
+					case 1:
+						Vector<String> struk = new Vector<String>();
+						int lagi = 1;
+						String tanggal ="a";
+						int nNota = 0;
+						nNota = (int)(Math.random()*10000);
+						int tbayar = 0;
+						cetakdbarang();
+						while(lagi == 1)
+							{
+								System.out.print("Masukkan no barang yang akan dibeli : ");
+								int beli = i.nextInt()-1;
+								System.out.print("Jumlah : ");
+								int jbarang = i.nextInt();
+								
+								int tharga = jbarang*Integer.valueOf((String) barang.elementAt(beli).elementAt(1));
+								
+								cstruk.addElement(cetak((String)barang.elementAt(beli).elementAt(0),Integer.valueOf((String)barang.elementAt(beli).elementAt(1)),jbarang,tharga));
+								
+								
+								System.out.println(barang.elementAt(beli).elementAt(0) +" " +jbarang +" buah : " +tharga);
+								tbayar += tharga;
+								untung += jbarang*(Integer.valueOf((String) barang.elementAt(beli).elementAt(1))-Integer.valueOf((String) barang.elementAt(beli).elementAt(2)));
+							
+								dpenjualan.addElement(datapen(nNota,getTanggal(),(String)barang.elementAt(beli).elementAt(0),jbarang));
+								
+								int lg = 0;
+								while (lg==0)
+								{
+									System.out.print("(1=ya 0=tidak)Ingin beli lagi ?");
+									lagi = i.nextInt();
+									if((lagi == 0) || (lagi==1))
+									{
+										lg = 1;
+									}
+									else
+									{
+										System.out.print("Angka yang anda masukkan salah");
+										lg=0;
+									}
+								}
+							}
+							garis2();
+							System.out.println("      Nota Pembelian");
+							garis2();
+							
+							while( b < cstruk.size())
+							{
+								transaksi = (cstruk.elementAt(b).elementAt(0) +" (" +cstruk.elementAt(b).elementAt(2) +") " +"\t" +" = " +cstruk.elementAt(b).elementAt(3));
+								System.out.println(cstruk.elementAt(b).elementAt(0) +" (" +cstruk.elementAt(b).elementAt(2) +") " +"\t" +" = " +cstruk.elementAt(b).elementAt(3));
+								b++;
+								tanggal = getTanggal();
+							}
+						garis();
+						System.out.println("Total " +"\t" +"\t" +" = "+tbayar);
+						garis();
+
+						System.out.println(tanggal);
+						System.out.println("Kode Transaksi : "+nNota);
+						break;
+						
+					case 2:
+						System.out.print("Masukkan Jumlah Tambah Barang : ");
+						jml = i.nextInt();
+						jum += jml;
+						for (int a = 0 ; a < jml ; a++)
+							{
+								System.out.print("Masukkan Nama Barang : ");
+								String nbarang = i.next();
+								System.out.print("Masukkan Harga Jual :");
+								int jual = i.nextInt();
+								System.out.print("Masukkan Harga Beli :");
+								int beli = i.nextInt();
+							
+								barang.addElement(addb(nbarang,jual,beli));
+							}
+						break;
+						
+					case 3:
+						cetakdbarang();
+						lagi = 1;
+						while (lagi == 1)
+							{
+								System.out.print("Masukkan no barang yang akan dihapus : ");
+								int hapus = i.nextInt()-1;
+								jum -= 1;
+								barang.removeElementAt(hapus);
+								int lg = 0;
+								while (lg==0)
+								{
+									System.out.print("(1=ya 0=tidak)Ingin menghapus lagi ? ");
+									lagi = i.nextInt();
+									if((lagi == 0) || (lagi==1))
+									{
+										lg = 1;
+									}
+									else
+									{
+										System.out.print("Angka yang anda masukkan salah");
+										lg=0;
+									}
+								}
+							}
+							break;
+							
+							
+					case 4:
+						garis();
+						System.out.println("      DATA BARANG");
+						garis();
+						System.out.print("No");
+						System.out.print("Nama Barang" +"\t"+"\t");
+						System.out.print("Harga Jual" +"\t");
+						System.out.println("Harga Beli");
+						
+						for (int a = 0 ; a < jum ; a++)
+							{
+								System.out.print(a+1 +"  ");
+								for (b = 0 ; b < barang.elementAt(a).size() ; b++)
+								{
+									System.out.print(barang.elementAt(a).elementAt(b) + "\t" + "\t");
+								}
+									System.out.println();
+							}
+								System.out.println();
+						System.out.print("Tekan enter untuk kembali");
+						ii.readLine();
+						break;
+						
+						
+					case 5:
+						garis();
+						System.out.println("Laba bersih : Rp " +untung);
+						garis();
+						break;
+						
+					case 6:
+						cetakdbarang();
+						System.out.print("Masukkan no barang yang akan diedit :");
+						int namabb = i.nextInt();
+						System.out.print("Masukkan harga jual baru :");
+						int hargajb = i.nextInt();
+						System.out.print("Masukkan harga beli beru :");
+						int hargabb = i.nextInt();
+						
+						String simpanbb = (String)barang.elementAt(namabb-1).elementAt(0);
+						barang.setElementAt(addb(simpanbb,hargajb,hargabb),namabb-1);
+						break;
+						
+					case 7:
+						System.out.print("Masukkan Nama Barang: ");
+						String cari = "a";
+						cari = i.next();
+						int in=0;
+						int z = 0;
+						garis2();
+						System.out.println("          Hasil ");
+						garis2();
+						do
+							{
+							String con = (String)barang.elementAt(in).elementAt(0);
+							if(con.toLowerCase().contains(cari.toLowerCase()) == true)
+								{
+								System.out.println((String)barang.elementAt(in).elementAt(0));
+								System.out.println("Harga : Rp" +(String)barang.elementAt(in).elementAt(1));
+								z = 1;
+								}
+							in++;
+							}
+						while(in<barang.size());
+						if(z==0)
+							{
+							System.out.println("Data tidak ketemu !");
+							}
+						break;
+					case 8:
+						//for(int f=0 ; f<2;f++)
+						if (transaksi.equals("kosong"))
+							{
+							System.out.println("Tidak ada data penjualan");
+							}
+						else
+							{
+							System.out.println("   Histori Belanja");
+							garis();
+							for(int f=0 ; f<dpenjualan.size();f++)
+								{
+								garis();
+								System.out.println("Kode Transaksi : " +dpenjualan.elementAt(f).elementAt(0));
+								System.out.println("Waktu : "+dpenjualan.elementAt(f).elementAt(1));
+								System.out.println("Barang : "+dpenjualan.elementAt(f).elementAt(2));
+								System.out.println("Jumlah : " +dpenjualan.elementAt(f).elementAt(3));
+								}
+							}
+						break;
+					case 9:
+						logout = 1;
+						break;
+					case 10:
+						logout = 1;
+						keluar = 1;
+						break;
+					}
+				}
+			}
+		}
+	}import java.util.*;
+import java.io.*;
+import java.text.*;
+import java.math.*;
+
+public class SPenjualan
+{
+	//Deklarasi vektor
+	public static Vector<Vector> barang = new Vector<Vector>();
+	public static Vector<Vector> cstruk = new Vector<Vector>();//cetak struk
+	public static Vector<Vector> dpenjualan = new Vector<Vector>();//data penjualan
+  
+	public static String [] user = {"pelanggan"};
+  
+	public static String [] pwd = {"plg"};
+
+	public static void login()
+		{
+			int login = -1;
+			int u = 0;
+			Scanner s = new Scanner(System.in);
+			do
+			{
+				garis2();
+				System.out.println("    Silahkan Login");
+				garis2();
+				System.out.print("Username : ");
+				String username=s.next();
+				System.out.print("Password : ");
+				String password=s.next();
+				System.out.println();
+				
+				for (u=0;u<user.length;u++)
+				{
+					if((username.equals(user[u]))&&(password.equals(pwd[u])))
+					{
+						login=u;
+						garis();
+						System.out.println("      SELAMAT DATANG ");
+						System.out.println("     TOKO LARIS MANIS ");
+					}
+					else
+					{
+						System.out.println("Username / Password Salah !!!");
+						System.out.println();
+					}
+				}
+			}
+			while(login==-1);
+		}
+	
+//Procedure	
+	public static Vector<Object> addb(String nbarang,int jual,int beli)
+		{
+			Vector <Object> barang = new Vector<Object>();
+			barang.addElement(nbarang);
+			barang.addElement(String.valueOf(jual));
+			barang.addElement(String.valueOf(beli));
+			return barang;
+		}
+	
+	public static Vector<Object> cetak(String nbarang,int harga,int j,int tharga)
+		{
+			Vector <Object> struk = new Vector<Object>();
+			struk.addElement(nbarang);
+			struk.addElement(harga);
+			struk.addElement(j);
+			struk.addElement(tharga);
+			return struk;
+		}
+	
+	public static Vector<Object> datapen(int kode,String tgl,String bar, int jbeli)
+		{
+			Vector <Object> datap = new Vector<Object>();
+			datap.addElement(kode);
+			datap.addElement(tgl);
+			datap.addElement(bar);
+			datap.addElement(jbeli);
+			return datap;
+		}
+	
+	public static String getTanggal() 
+		{  
+			DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");  
+			Date date = new Date();  
+			return dateFormat.format(date);  
+		}  
+//Fungsi
+	public static void garis()
+		{
+			System.out.println("-------------------------");
+		}
+		
+	public static void garis2()
+		{
+			System.out.println("=========================");
+		}
+	public static void cetakdbarang()
+	{
+	int jum = barang.size();
+		Vector<String> struk = new Vector<String>();
+						garis2();
+						System.out.println("      Data Barang");
+						garis2();
+						System.out.println();
+						for (int a = 0 ; a < jum ; a++)
+							{
+							System.out.print(a+1 +"  ");
+							System.out.print(barang.elementAt(a).elementAt(0) + "\t" +" Rp " +barang.elementAt(a).elementAt(1));
+							System.out.println();
+							}
+						garis2();
+	}
+	
+	public static void main(String[]args) throws IOException
+		{
+			BufferedReader ii = new BufferedReader(new InputStreamReader(System.in));
+			Scanner i = new Scanner(System.in);
+			Vector<Vector> v = new Vector<Vector>();
+			barang.addElement(addb("Jaket",20000,10000));
+			barang.addElement(addb("Celana",25000,20000));
+			barang.addElement(addb("Sepatu",45000,40000));
+				int jum = barang.size();
+				int jml = 0;
+				int logout = 0;
+				int untung = 0 ;
+				int keluar = 0;
+				int b = 0;
+				String transaksi = "kosong";
+		
+		
+		
+		while(keluar == 0)
+			{
+				login();
+				logout = 0;
+				while(logout == 0)
+				{
+					garis();
+					System.out.println("1. Beli Barang");
+					System.out.println("2. Tambah Barang");
+					System.out.println("3. Hapus Barang");
+					System.out.println("4. Cek Data Barang");
+					System.out.println("5. Pendapatan");
+					System.out.println("6. Edit Data Barang");
+					System.out.println("7. Cari Data");
+					System.out.println("8. Data Penjualan");
+					System.out.println("9. Log Out");
+					System.out.println("10. Keluar");
+					System.out.print("Masukkan pilihan (1-10) : ");
+					int pil = i.nextInt();
+					garis();
+					
+				switch (pil)
+				{
+					case 1:
+						Vector<String> struk = new Vector<String>();
+						int lagi = 1;
+						String tanggal ="a";
+						int nNota = 0;
+						nNota = (int)(Math.random()*10000);
+						int tbayar = 0;
+						cetakdbarang();
+						while(lagi == 1)
+							{
+								System.out.print("Masukkan no barang yang akan dibeli : ");
+								int beli = i.nextInt()-1;
+								System.out.print("Jumlah : ");
+								int jbarang = i.nextInt();
+								
+								int tharga = jbarang*Integer.valueOf((String) barang.elementAt(beli).elementAt(1));
+								
+								cstruk.addElement(cetak((String)barang.elementAt(beli).elementAt(0),Integer.valueOf((String)barang.elementAt(beli).elementAt(1)),jbarang,tharga));
+								
+								
+								System.out.println(barang.elementAt(beli).elementAt(0) +" " +jbarang +" buah : " +tharga);
+								tbayar += tharga;
+								untung += jbarang*(Integer.valueOf((String) barang.elementAt(beli).elementAt(1))-Integer.valueOf((String) barang.elementAt(beli).elementAt(2)));
+							
+								dpenjualan.addElement(datapen(nNota,getTanggal(),(String)barang.elementAt(beli).elementAt(0),jbarang));
+								
+								int lg = 0;
+								while (lg==0)
+								{
+									System.out.print("(1=ya 0=tidak)Ingin beli lagi ?");
+									lagi = i.nextInt();
+									if((lagi == 0) || (lagi==1))
+									{
+										lg = 1;
+									}
+									else
+									{
+										System.out.print("Angka yang anda masukkan salah");
+										lg=0;
+									}
+								}
+							}
+							garis2();
+							System.out.println("      Nota Pembelian");
+							garis2();
+							
+							while( b < cstruk.size())
+							{
+								transaksi = (cstruk.elementAt(b).elementAt(0) +" (" +cstruk.elementAt(b).elementAt(2) +") " +"\t" +" = " +cstruk.elementAt(b).elementAt(3));
+								System.out.println(cstruk.elementAt(b).elementAt(0) +" (" +cstruk.elementAt(b).elementAt(2) +") " +"\t" +" = " +cstruk.elementAt(b).elementAt(3));
+								b++;
+								tanggal = getTanggal();
+							}
+						garis();
+						System.out.println("Total " +"\t" +"\t" +" = "+tbayar);
+						garis();
+
+						System.out.println(tanggal);
+						System.out.println("Kode Transaksi : "+nNota);
+						break;
+						
+					case 2:
+						System.out.print("Masukkan Jumlah Tambah Barang : ");
+						jml = i.nextInt();
+						jum += jml;
+						for (int a = 0 ; a < jml ; a++)
+							{
+								System.out.print("Masukkan Nama Barang : ");
+								String nbarang = i.next();
+								System.out.print("Masukkan Harga Jual :");
+								int jual = i.nextInt();
+								System.out.print("Masukkan Harga Beli :");
+								int beli = i.nextInt();
+							
+								barang.addElement(addb(nbarang,jual,beli));
+							}
+						break;
+						
+					case 3:
+						cetakdbarang();
+						lagi = 1;
+						while (lagi == 1)
+							{
+								System.out.print("Masukkan no barang yang akan dihapus : ");
+								int hapus = i.nextInt()-1;
+								jum -= 1;
+								barang.removeElementAt(hapus);
+								int lg = 0;
+								while (lg==0)
+								{
+									System.out.print("(1=ya 0=tidak)Ingin menghapus lagi ? ");
+									lagi = i.nextInt();
+									if((lagi == 0) || (lagi==1))
+									{
+										lg = 1;
+									}
+									else
+									{
+										System.out.print("Angka yang anda masukkan salah");
+										lg=0;
+									}
+								}
+							}
+							break;
+							
+							
+					case 4:
+						garis();
+						System.out.println("      DATA BARANG");
+						garis();
+						System.out.print("No");
+						System.out.print("Nama Barang" +"\t"+"\t");
+						System.out.print("Harga Jual" +"\t");
+						System.out.println("Harga Beli");
+						
+						for (int a = 0 ; a < jum ; a++)
+							{
+								System.out.print(a+1 +"  ");
+								for (b = 0 ; b < barang.elementAt(a).size() ; b++)
+								{
+									System.out.print(barang.elementAt(a).elementAt(b) + "\t" + "\t");
+								}
+									System.out.println();
+							}
+								System.out.println();
+						System.out.print("Tekan enter untuk kembali");
+						ii.readLine();
+						break;
+						
+						
+					case 5:
+						garis();
+						System.out.println("Laba bersih : Rp " +untung);
+						garis();
+						break;
+						
+					case 6:
+						cetakdbarang();
+						System.out.print("Masukkan no barang yang akan diedit :");
+						int namabb = i.nextInt();
+						System.out.print("Masukkan harga jual baru :");
+						int hargajb = i.nextInt();
+						System.out.print("Masukkan harga beli beru :");
+						int hargabb = i.nextInt();
+						
+						String simpanbb = (String)barang.elementAt(namabb-1).elementAt(0);
+						barang.setElementAt(addb(simpanbb,hargajb,hargabb),namabb-1);
+						break;
+						
+					case 7:
+						System.out.print("Masukkan Nama Barang: ");
+						String cari = "a";
+						cari = i.next();
+						int in=0;
+						int z = 0;
+						garis2();
+						System.out.println("          Hasil ");
+						garis2();
+						do
+							{
+							String con = (String)barang.elementAt(in).elementAt(0);
+							if(con.toLowerCase().contains(cari.toLowerCase()) == true)
+								{
+								System.out.println((String)barang.elementAt(in).elementAt(0));
+								System.out.println("Harga : Rp" +(String)barang.elementAt(in).elementAt(1));
+								z = 1;
+								}
+							in++;
+							}
+						while(in<barang.size());
+						if(z==0)
+							{
+							System.out.println("Data tidak ketemu !");
+							}
+						break;
+					case 8:
+						//for(int f=0 ; f<2;f++)
+						if (transaksi.equals("kosong"))
+							{
+							System.out.println("Tidak ada data penjualan");
+							}
+						else
+							{
+							System.out.println("   Histori Belanja");
+							garis();
+							for(int f=0 ; f<dpenjualan.size();f++)
+								{
+								garis();
+								System.out.println("Kode Transaksi : " +dpenjualan.elementAt(f).elementAt(0));
+								System.out.println("Waktu : "+dpenjualan.elementAt(f).elementAt(1));
+								System.out.println("Barang : "+dpenjualan.elementAt(f).elementAt(2));
+								System.out.println("Jumlah : " +dpenjualan.elementAt(f).elementAt(3));
+								}
+							}
+						break;
+					case 9:
+						logout = 1;
+						break;
+					case 10:
+						logout = 1;
+						keluar = 1;
+						break;
+					}
+				}
+			}
+		}
+	}
