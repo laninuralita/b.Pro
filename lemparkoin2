@@ -1,0 +1,48 @@
+public class lemparkoin2
+{
+public static void main(String [] args)
+{
+	int angka[] = new int[12];
+	int aa;
+	int gambar[] = new int[12];
+	int bb;
+	int hasila;
+	int hasilb;
+	aa = 0;
+	hasila = 0;
+	hasilb = 0;
+	while (aa < angka.length)
+	{
+	angka[aa] = (int)(Math.random()*10);
+	if (angka[aa] >= 5)
+	{
+	System.out.println("Gambar");
+	hasila += 1; 
+	}
+	else
+	{
+	System.out.println("Angka");
+	hasilb += 1;
+	}
+	aa++;
+	}
+	System.out.println(" ");
+	System.out.println("Gambar : " +hasila);	
+	System.out.println("Angka : " +hasilb);
+
+	if ( hasila == hasilb)
+	{ System.out.println("Seri");
+	}
+	else
+	{
+	if ( hasila > hasilb)
+	{
+	System.out.println("Gambar Menang");
+	}
+	else
+	{
+	System.out.println("Angka Menang");
+	}
+	}
+	}
+}
